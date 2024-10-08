@@ -1,5 +1,4 @@
 # RSNA Breast Cancer Detection
-RSNA Breast Cancer Detection: Two different Deep Learning techniques used to identify breast cancer in mammography images from the RSNA 2024 competition.
 
 This repository contains my solution to the RSNA 2024 Breast Cancer Detection competition. The goal of the competition is to detect and classify breast cancer from mammography images. I have implemented state-of-the-art models and preprocessing techniques to achieve high accuracy in breast cancer identification from this challenging dataset.
 
