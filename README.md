@@ -1,6 +1,12 @@
 # RSNA Breast Cancer Detection
 
-This repository contains my solution to the RSNA 2024 Breast Cancer Detection competition. The goal of the competition is to detect and classify breast cancer from mammography images. I have implemented state-of-the-art models and preprocessing techniques to achieve high accuracy in breast cancer identification from this challenging dataset.
+This repository contains my solutions to the [**RSNA Breast Cancer Detection**](https://www.kaggle.com/competitions/rsna-breast-cancer-detection/) competition. The goal of the competition is to detect and classify breast cancer from mammography images. In this repository, I have implemented two distinct approaches to tackle this challenge:
+
+1. A **CVAE (Conditional Variational Autoencoder)** anomaly detection model designed to identify abnormal patterns in the mammograms.
+2. A **Transfer Learning** classification model solution.
+
+Both models leverage advanced preprocessing techniques and strive to achieve high accuracy in breast cancer identification from this complex dataset.
+
 
 ---
 
@@ -9,40 +15,117 @@ This repository contains my solution to the RSNA 2024 Breast Cancer Detection co
 - [Overview](#overview)
 - [Dataset](#dataset)
 - [Preprocessing](#preprocessing)
-- [Model Architecture](#model-architecture)
+- [CVAE Model Architecture](#cvae-model-architecture)
 - [Training](#training)
 - [Evaluation](#evaluation)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Contributions](#contributions)
-- [License](#license)
+- [Transfer Learning Model Architecture](#transfer-learning-model-architecture)
+- [Training](#training)
+- [Evaluation](#evaluation)
 
 ---
 
 ## Overview
 
-The RSNA 2024 Breast Cancer Detection competition focuses on accurately identifying breast cancer in mammography images. This repository demonstrates how to leverage deep learning to build robust classification models, utilizing advanced techniques such as data augmentation, transfer learning, and model fine-tuning.
+The RSNA Breast Cancer Detection competition focuses on accurately identifying breast cancer in mammography images. Early and accurate detection is essential for effective treatment, and automating this process could improve the quality and safety of patient care, while reducing costs and unnecessary medical procedures. By applying deep learning techniques, this competition contributes to advancing automated breast cancer detection.
 
 ---
 
 ## Dataset
 
-The dataset consists of mammography images provided by the RSNA, divided into training and validation sets. Each image is categorized based on the presence or absence of breast cancer. Patient-specific subfolders are used for organizing the images, and TensorFlow records are generated for efficient data processing.
+### Key Features:
 
-- **Source**: [RSNA Mammography Dataset](https://www.kaggle.com/competitions/rsna-breast-cancer-detection)
+- **Images**: The dataset contains radiographic breast images, in DICOM format, for about 11,000 patients, with approximately 8,000 patients in the hidden test set. Each patient may have multiple images, usually around four.
+- **Patient Metadata**: Accompanying metadata includes essential information such as:
+  - **site_id**: ID code for the source hospital.
+  - **patient_id**: Unique identifier for each patient.
+  - **image_id**: Unique identifier for each image.
+  - **laterality**: Indicates whether the image is of the left or right breast.
+  - **view**: Orientation of the image, typically two views per breast for screening exams.
+  - **age**: Patient's age in years.
+  - **implant**: Indicates if the patient has breast implants.
+  - **density**: A rating of breast tissue density (A to D), with D being the most dense, affecting diagnostic challenges.
+  - **cancer**: Target variable indicating the presence of malignant cancer (provided only for training).
+  - **biopsy**: Indicates if a follow-up biopsy was performed.
+  - **invasive**: Specifies if the diagnosed cancer was invasive.
+  - **BIRADS**: Assessment category for follow-up necessity, ranging from 0 (needs follow-up) to 2 (normal).
+  - **prediction_id**: ID for matching submission rows in the test set.
+  - **difficult_negative_case**: Flag for unusually difficult cases (only provided in training).
+
+- **Source**: [RSNA Mammography Dataset](https://www.kaggle.com/competitions/rsna-breast-cancer-detection/data)
 
 ---
 
 ## Preprocessing
 
-Key preprocessing steps applied to the dataset include:
-- **Image Windowing**: Applied to enhance contrast and focus on regions of interest.
-- **Cropping and Resizing**: Performed to standardize image sizes for model input.
-- **Normalization and Augmentation**: Implemented using Albumentations to handle class imbalance and improve model generalization.
+For this project, I used preprocessing code from Paul Bacher's [MammographyPreprocessor](https://www.kaggle.com/code/paulbacher/custom-preprocessor-rsna-breast-cancer#About-resizing-parameter) class, with some modifications. The preprocessing steps aim to prepare the RSNA Breast Cancer Detection dataset for deep learning models. Below, I describe the original steps as well as the final format of the dataset I created.
+
+### **Preprocessing Steps:**
+
+- **Windowing**:  
+  Improve the contrast of the mammography images, making them more clinically accurate for viewing.
+
+- **Fix Photometric Interpretation**:  
+  Ensure that all image backgrounds are set to zero, which standardizes the pixel intensity values across the dataset.
+
+- **Rescale with Slope and Intercept**:  
+  Even though this might not be strictly necessary, it helps to ensure image consistency by applying the correct scaling to pixel values.
+
+- **Normalize Between 0 and 255**:  
+  Convert pixel values to an 8-bit range, reducing the bit-depth of the images to grayscale for easier processing.
+
+- **Flip the Breasts**:  
+  To ensure consistency, all images are flipped so that the breasts are oriented in the same direction.
+
+- **Crop the Background**:  
+  Remove extra background regions to focus only on the breast tissue, which is the region of interest for cancer detection.
+
+- **Resize**:  
+  After cropping, resize the images to a standard size to fit the input dimensions of the model.
+
+- **Save the Image**:  
+  Save the preprocessed images, with the option of either PNG (default) or JPEG formats.
+
+
+### **Aspect Ratio Consideration for Resizing**
+
+I created a dataset of **728x1456** PNG images, which adheres to a **2:1 aspect ratio**. This choice was based on the following observations:
+
+- When cropped, a sample of 300 mammography images had a median aspect ratio of 2.1, making them naturally rectangular in shape.
+- For computational purposes, resizing the images is essential. However, resizing to square dimensions (e.g., 1024x1024) causes an uneven loss of information, particularly compressing the vertical axis more than the horizontal axis.
 
 ---
 
-## Model Architecture
+## CVAE Model Architecture
+
+The solution implements multiple architectures to address breast cancer detection. The primary models used are:
+
+- **ConvNeXt-Tiny**: A high-performance convolutional network used for transfer learning.
+- **EfficientNet**: Optimized for both speed and accuracy in handling large-scale mammography images.
+
+### Custom Preprocessing and Layers
+- Custom image preprocessing is handled before feeding data into the neural networks.
+- Residual and convolutional layers are added to fine-tune the model for mammography data.
+
+---
+
+## Training
+
+The model is trained using the following configurations:
+- **Loss Function**: Binary Cross-Entropy and Binary Focal Cross-Entropy.
+- **Optimizers**: Adam and AdamW for optimization.
+- **Augmentations**: Applied using Albumentations to increase data diversity and robustness.
+
+---
+
+## Evaluation
+
+The model's performance is evaluated using key metrics such as:
+- **F1 Score**: Focused on maximizing the balance between precision and recall.
+- **ROC-AUC Score**: To assess the model's ability to distinguish between cancerous and non-cancerous images.
+- **Accuracy**: For overall performance evaluation.
+
+---
+## CVAE Model Architecture
 
 The solution implements multiple architectures to address breast cancer detection. The primary models used are:
 
@@ -73,18 +156,8 @@ The model's performance is evaluated using key metrics such as:
 
 ---
 
-## Installation
-
-### Requirements
-
-- Python 3.8+
-- TensorFlow
-- Keras
-- Albumentations
-- Other dependencies can be found in the `requirements.txt`.
-
 ### Clone the repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/rsna-breast-cancer-detection.git
+git clone https://github.com/Atallinio/rsna-breast-cancer-detection.git
 cd rsna-breast-cancer-detection
