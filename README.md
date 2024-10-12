@@ -95,25 +95,28 @@ I created a dataset of **728x1456** PNG images, which adheres to a **2:1 aspect 
 
 ---
 
-## CVAE Model Architecture
+## Generative Model Architecture (CVAE)
 
-The solution implements multiple architectures to address breast cancer detection. The primary models used are:
+I will frame the problem as an anomaly detection problem and will train a Convolutional Variational Autoencoder. 
+The intuition behind the model is as follows:
 
-- **ConvNeXt-Tiny**: A high-performance convolutional network used for transfer learning.
-- **EfficientNet**: Optimized for both speed and accuracy in handling large-scale mammography images.
+- Train a Convolutional Variational Autoencoder (CVAE) on the non-cancer images only
+- Calculate a threshold for the error
+- A higher error should be expected when generating cancer images
 
-### Custom Preprocessing and Layers
-- Custom image preprocessing is handled before feeding data into the neural networks.
-- Residual and convolutional layers are added to fine-tune the model for mammography data.
+
+![image](https://github.com/user-attachments/assets/b23dfdf8-35c5-466d-abbd-48006ba59568)
+
 
 ---
 
 ## Training
 
-The model is trained using the following configurations:
-- **Loss Function**: Binary Cross-Entropy and Binary Focal Cross-Entropy.
-- **Optimizers**: Adam and AdamW for optimization.
-- **Augmentations**: Applied using Albumentations to increase data diversity and robustness.
+- Base Model: Built upon a VAE from a TensorFlow tutorial² 
+- Encoder Architecture : Implemented Pre-activation residual blocks in the encoder for improved feature extraction
+- Decoder Architecture (5 Layers): Utilizes Transposed Convolutions to reconstruct the image from the latent space
+- Residual Blocks: allow for deeper architectures while mitigating the vanishing gradient problem
+
 
 ---
 
@@ -125,7 +128,7 @@ The model's performance is evaluated using key metrics such as:
 - **Accuracy**: For overall performance evaluation.
 
 ---
-## CVAE Model Architecture
+## Transfer Learning Model Architecture
 
 The solution implements multiple architectures to address breast cancer detection. The primary models used are:
 
