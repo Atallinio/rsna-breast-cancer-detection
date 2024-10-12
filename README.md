@@ -15,10 +15,10 @@ Both models leverage advanced preprocessing techniques and strive to achieve hig
 - [Overview](#overview)
 - [Dataset](#dataset)
 - [Preprocessing](#preprocessing)
-- [CVAE Model Architecture](#cvae-model-architecture)
+- [Generative Learning Model](#generative-learning-model-(cvae))
 - [Training](#training)
 - [Evaluation](#evaluation)
-- [Transfer Learning Model Architecture](#transfer-learning-model-architecture)
+- [Transfer Learning Model](#transfer-learning-model)
 - [Training](#training)
 - [Evaluation](#evaluation)
 
@@ -95,7 +95,7 @@ I created a dataset of **728x1456** PNG images, which adheres to a **2:1 aspect 
 
 ---
 
-## Generative Model Architecture (CVAE)
+## Generative Learning Model (CVAE)
 
 I will frame the problem as an anomaly detection problem and will train a Convolutional Variational Autoencoder. 
 The intuition behind the model is as follows:
@@ -128,7 +128,7 @@ The model's performance is evaluated using key metrics such as:
 - **Accuracy**: For overall performance evaluation.
 
 ---
-## Transfer Learning Model Architecture
+## Transfer Learning Model
 
 The solution implements multiple architectures to address breast cancer detection. The primary models used are:
 
