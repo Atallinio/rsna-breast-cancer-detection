@@ -111,7 +111,8 @@ The intuition behind the model is as follows:
 
 
 
-![image](https://github.com/user-attachments/assets/b23dfdf8-35c5-466d-abbd-48006ba59568)
+![autoencoder_architecture](https://github.com/user-attachments/assets/7a424bf0-11c3-4a96-897b-486b5e10675e)
+
 
 
 
