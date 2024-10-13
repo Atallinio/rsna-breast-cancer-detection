@@ -7,6 +7,7 @@ This repository contains my solutions to the [**RSNA Breast Cancer Detection**](
 
 Both models leverage advanced preprocessing techniques and strive to achieve high accuracy in breast cancer identification from this complex dataset.
 
+[**Link to my Kaggle Account**](https://www.kaggle.com/joeatallah)
 
 ---
 
