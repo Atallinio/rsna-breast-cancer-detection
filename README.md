@@ -16,11 +16,7 @@ Both models leverage advanced preprocessing techniques and strive to achieve hig
 - [Dataset](#dataset)
 - [Preprocessing](#preprocessing)
 - [Generative Learning Model](#generative-learning-model-(cvae))
-- [Training](#training)
-- [Evaluation](#evaluation)
 - [Transfer Learning Model](#transfer-learning-model)
-- [Training](#training)
-- [Evaluation](#evaluation)
 
 ---
 
@@ -86,6 +82,9 @@ For this project, I used preprocessing code from Paul Bacher's [MammographyPrepr
   Save the preprocessed images, with the option of either PNG (default) or JPEG formats.
 
 
+![image](<Screenshot 2024-10-13 033521.png>)
+
+
 ### **Aspect Ratio Consideration for Resizing**
 
 I created a dataset of **728x1456** PNG images, which adheres to a **2:1 aspect ratio**. This choice was based on the following observations:
@@ -104,58 +103,51 @@ The intuition behind the model is as follows:
 - Calculate a threshold for the error
 - A higher error should be expected when generating cancer images
 
+### **The Model Architecture**:
+- **Base Model**: Built upon a VAE from a TensorFlow tutorial² 
+- **Encoder Architecture**: Implemented Pre-activation residual blocks in the encoder for improved feature extraction
+- **Decoder Architecture (5 Layers)**: Utilizes Transposed Convolutions to reconstruct the image from the latent space
+- **Residual Blocks**: allow for deeper architectures while mitigating the vanishing gradient problem
+
+
 
 ![image](https://github.com/user-attachments/assets/b23dfdf8-35c5-466d-abbd-48006ba59568)
 
 
----
-
-## Training
-
-- Base Model: Built upon a VAE from a TensorFlow tutorial² 
-- Encoder Architecture : Implemented Pre-activation residual blocks in the encoder for improved feature extraction
-- Decoder Architecture (5 Layers): Utilizes Transposed Convolutions to reconstruct the image from the latent space
-- Residual Blocks: allow for deeper architectures while mitigating the vanishing gradient problem
-
 
 ---
 
-## Evaluation
+## Training 
 
-The model's performance is evaluated using key metrics such as:
-- **F1 Score**: Focused on maximizing the balance between precision and recall.
-- **ROC-AUC Score**: To assess the model's ability to distinguish between cancerous and non-cancerous images.
-- **Accuracy**: For overall performance evaluation.
+- **Loss Function**: A Variational Autoencoder uses a special loss function consisting of two terms: **Kullback-Leibler divergence** & **Reconstruction Loss**
+
+![image](image.png)
 
 ---
 ## Transfer Learning Model
 
-The solution implements multiple architectures to address breast cancer detection. The primary models used are:
+The Idea is to use an EfficientNet model as a backbone to classify the existence of cancer in mammography images
 
-- **ConvNeXt-Tiny**: A high-performance convolutional network used for transfer learning.
-- **EfficientNet**: Optimized for both speed and accuracy in handling large-scale mammography images.
-
-### Custom Preprocessing and Layers
-- Custom image preprocessing is handled before feeding data into the neural networks.
-- Residual and convolutional layers are added to fine-tune the model for mammography data.
+![image](image-1.png)
 
 ---
 
 ## Training
 
-The model is trained using the following configurations:
-- **Loss Function**: Binary Cross-Entropy and Binary Focal Cross-Entropy.
-- **Optimizers**: Adam and AdamW for optimization.
-- **Augmentations**: Applied using Albumentations to increase data diversity and robustness.
+The model is trained and evaluated using the following configurations:
+- **Loss Function**: Vanilla Binary Cross-Entropy.
+- **Optimizer**: Adam optimizer.
 
----
+Augmentation Applied to Train data
+- Random brightness
+- Random contrast
+- Random cropping
 
-## Evaluation
 
 The model's performance is evaluated using key metrics such as:
-- **F1 Score**: Focused on maximizing the balance between precision and recall.
-- **ROC-AUC Score**: To assess the model's ability to distinguish between cancerous and non-cancerous images.
-- **Accuracy**: For overall performance evaluation.
+- **Probabilistic F1 Score**: Focused on maximizing the balance between precision and recall.
+- **AUC Score**: To assess the model's ability to distinguish between cancerous and non-cancerous images.
+- **Binary Accuracy**: For overall performance evaluation.
 
 ---
 
