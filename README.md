@@ -82,7 +82,8 @@ For this project, I used preprocessing code from Paul Bacher's [MammographyPrepr
   Save the preprocessed images, with the option of either PNG (default) or JPEG formats.
 
 
-![image](<Screenshot 2024-10-13 033521.png>)
+![Screenshot 2024-10-13 033521](https://github.com/user-attachments/assets/6f5c38a4-4f81-4a00-97c1-e14c1afd7afc)
+
 
 
 ### **Aspect Ratio Consideration for Resizing**
@@ -122,14 +123,15 @@ The intuition behind the model is as follows:
 
 - **Loss Function**: A Variational Autoencoder uses a special loss function consisting of two terms: **Kullback-Leibler divergence** & **Reconstruction Loss**
 
-![image](image.png)
+![image](https://github.com/user-attachments/assets/fae1ec1f-2659-456c-b11c-e0337c97b585)
+
 
 ---
 ## Transfer Learning Model
 
 The Idea is to use an EfficientNet model as a backbone to classify the existence of cancer in mammography images
 
-![image](image-1.png)
+![image](https://github.com/user-attachments/assets/f49d8c12-a0d3-44cd-99ea-3fcc3f263c20)
 
 ---
 
