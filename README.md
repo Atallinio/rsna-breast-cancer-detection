@@ -107,8 +107,8 @@ The intuition behind the model is as follows:
 
 ### **The Model Architecture**:
 - **Base Model**: Built upon a VAE from a TensorFlow tutorial² 
-- **Encoder Architecture**: Implemented Pre-activation residual blocks in the encoder for improved feature extraction
-- **Decoder Architecture (5 Layers)**: Utilizes Transposed Convolutions to reconstruct the image from the latent space
+- **Encoder Architecture (14 Layers)**: Implemented Pre-activation residual blocks in the encoder for improved feature extraction
+- **Decoder Architecture (14 Layers)**: Utilizes Transposed Convolutions to reconstruct the image from the latent space
 - **Residual Blocks**: allow for deeper architectures while mitigating the vanishing gradient problem
 
 
